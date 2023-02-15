@@ -41,7 +41,7 @@ def set_diff(date: str, followers: int,
     diff = DATA_DIR / 'diff.csv'
 
     row = [date, str(followers), str(added_names), str(removed_names)]
-    logging.info(row)
+    logging.info(f'{date=}, {followers=}, {added_names=}, {removed_names=}')
 
     found = False
     rows = []
