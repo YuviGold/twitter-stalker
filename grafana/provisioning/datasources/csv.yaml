@@ -1,0 +1,10 @@
+apiVersion: 1
+
+datasources:
+  - name: Followers
+    uid: csv-followers
+    type: marcusolsson-csv-datasource
+    editable: true
+    url: /data/diff.csv
+    jsonData:
+      storage: local

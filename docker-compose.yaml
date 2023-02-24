@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  grafana:
+    image: grafana/grafana
+    environment:
+      - TERM=linux
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,marcusolsson-csv-datasource
+      - GF_PLUGIN_ALLOW_LOCAL_MODE=true
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/data
+      - grafana-storage:/var/lib/grafana
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/etc/dashboards
+    restart: always
+
+
+volumes:
+  grafana-storage:

@@ -1,5 +1,7 @@
 # Twitter Stalker
 
+!["Followers Trend"](./docs/img/followers_trend.png?raw=true "Followers Trend")
+
 Just a simple script I made that fetches a user's Twitter followers list.
 Combined with a crontab running on a daily basis so I can find out who unfollows me :)
 
@@ -41,3 +43,13 @@ TWITTER_TOKEN=<auth_token>
 ...
 0 0 * * * <path/to/repo>/twitter-stalker/main.py >> <path/to/repo>/twitter-stalker/log.txt 2>&1
 ```
+
+## Show Me Some Trends!
+
+The repo has a [Grafana](https://grafana.com/) deployment based on [Docker Compose](https://docs.docker.com/compose/).
+
+1. Deploy
+    ```
+    make grafana
+    ```
+1. Open the browser at http://localhost:3000/d/twitter-trends
