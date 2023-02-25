@@ -18,16 +18,30 @@ TWITTER_BASEURL = "https://api.twitter.com/1.1"
 DATA_DIR = Path(__file__).parent / "data"
 
 
-def get_twitter_followers(username: str, count: int) -> dict:
-    command = f'curl -s "{TWITTER_BASEURL}/followers/list.json?screen_name={username}&count={count}" -H "Authorization: Bearer {TWITTER_TOKEN}"'
+def get_twitter_followers(username: str,
+                          count: int,
+                          cursor: int = -1,
+                          skip_status: bool = True,
+                          include_user_entities: bool = False) -> dict:
+    '''
+    ref: https://developer.twitter.com/en/docs/twitter-api/v1/accounts-and-users/follow-search-get-users/api-reference/get-friends-list
+    '''
+    parameters = '&'.join([f"screen_name={username}", f"{count=}", f"{cursor=}",
+                           f"{skip_status=}", f"{include_user_entities=}"])
+    command = f'curl -s "{TWITTER_BASEURL}/followers/list.json?{parameters}" -H "Authorization: Bearer {TWITTER_TOKEN}"'
     output = subprocess.getoutput(command)
     return json.loads(output)
 
 
-def get_followers(username: str) -> dict:
-    data = get_twitter_followers(username, DEFAULT_COUNT)
-    data = {user['id_str']: {'screen_name': user['screen_name'], 'name': user['name']} for user in data['users']}
-    return data
+def get_followers(username: str) -> dict[str, dict[str, str]]:
+    cursor = -1
+    users: dict[str, dict[str, str]] = dict()
+    while cursor != 0:
+        data = get_twitter_followers(username, DEFAULT_COUNT, cursor)
+        users |= {user['id_str']: {'screen_name': user['screen_name'], 'name': user['name']} for user in data['users']}
+        cursor = data['next_cursor']
+
+    return users
 
 
 def get_diff(old: dict, new: dict) -> tuple[list[str], list[str]]:
