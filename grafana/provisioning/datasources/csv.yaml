@@ -5,6 +5,13 @@ datasources:
     uid: csv-followers
     type: marcusolsson-csv-datasource
     editable: true
-    url: /data/diff.csv
+    url: /data/followers_diff.csv
+    jsonData:
+      storage: local
+  - name: Friends
+    uid: csv-friends
+    type: marcusolsson-csv-datasource
+    editable: true
+    url: /data/friends_diff.csv
     jsonData:
       storage: local
